@@ -1,8 +1,9 @@
-import { Button } from '@chakra-ui/react'
+import Form from './form'
+
 function App() {
   return (
-    <div className="App">
-      <Button>按钮</Button>
+    <div className="App" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+      <Form/>
     </div>
   );
 }
