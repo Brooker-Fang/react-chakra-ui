@@ -1,8 +1,10 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Input, InputGroup, InputLeftAddon, Stack,  Flex, Switch, Button,FormLabel,useToast  } from '@chakra-ui/react'
-import { FaUserAlt, FaLock } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa'
+import { EmailIcon } from '@chakra-ui/icons'
 import axios from 'axios'
 export default function Login () {
+  const [loading, setLoading] = useState(false)
   const toast = useToast()
   const email = useRef()
   const password = useRef()
@@ -11,7 +13,9 @@ export default function Login () {
       email: email.current.value,
       password: password.current.value
     }
+    setLoading(true)
     axios.post('https://conduit.productionready.io/users/login',{user}).then(res => {
+      setLoading(false)
       toast({
         title: "Account login.",
         description: "login success",
@@ -20,6 +24,7 @@ export default function Login () {
         isClosable: true,
       })
     }).catch(e => {
+      setLoading(false)
       toast({
         title: "Account login.",
         description: "login error",
@@ -33,7 +38,7 @@ export default function Login () {
     <form>
       <Stack spacing="2">
         <InputGroup>
-          <InputLeftAddon children={<FaUserAlt></FaUserAlt>}></InputLeftAddon>
+          <InputLeftAddon children={<EmailIcon ></EmailIcon>}></InputLeftAddon>
           <Input ref={email} placeholder="请输入邮箱"></Input>
         </InputGroup>
         <InputGroup>
@@ -44,7 +49,7 @@ export default function Login () {
           <Switch id="deal" mr="3"></Switch>
           <FormLabel>记住我</FormLabel>
         </Flex>
-        <Button fontSize="18px" fontWeight="300"  borderRadius="25px" bgColor="#187cb7" color="#fff" onClick={login}>登录</Button>
+        <Button _hover={{opacity: 0.5}} isLoading={loading} fontSize="18px" fontWeight="300"  borderRadius="25px" bgColor="#187cb7" color="#fff" onClick={login}>登录</Button>
       </Stack>
     </form>
   )
